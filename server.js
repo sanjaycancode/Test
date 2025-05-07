@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/api/submit", (req, res) => {
   const data = req.body;
-  console.log("Received data:", JSON.stringify(data, null, 2));
+  console.log("Received data Submit:", JSON.stringify(data, null, 2));
   res.status(200).json({ message: "Data received successfully!" });
 });
 
