@@ -9,17 +9,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/outlook/webhook", (req, res) => {
-  if (req.query && req.query.validationToken) {
+  if (req?.query && req?.query?.validationToken) {
     res.set("Content-Type", "text/plain");
     res.send(req.query.validationToken);
     return;
   }
 
-  const data = req.body.value;
+  const data = req?.body?.value || null;
+
+  if (!data) res.status(200).json("No Data!");
 
   console.log("Received:", data);
 
-  res.status(200).json({ message: "Data received successfully!" });
+  res.status(200).json("Data received successfully!");
 });
 
 app.listen(3000, () => {
