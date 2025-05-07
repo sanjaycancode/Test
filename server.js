@@ -8,12 +8,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post("/api/submit", (req, res) => {
-  const data = req.body;
-  console.log("Received data Submit:", JSON.stringify(data, null, 2));
-  res.status(200).json({ message: "Data received successfully!" });
-});
-
 app.post("/outlook/webhook", (req, res) => {
   if (req.query && req.query.validationToken) {
     res.set("Content-Type", "text/plain");
@@ -23,7 +17,7 @@ app.post("/outlook/webhook", (req, res) => {
 
   const data = req.body.value;
 
-  console.log("POST: Received Body:", JSON.stringify(data, null, 2));
+  console.log("POST: Received Body:", data);
 
   res.status(200).json({ message: "Data received successfully!" });
 });
