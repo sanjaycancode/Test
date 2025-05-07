@@ -16,13 +16,13 @@ app.post("/api/submit", (req, res) => {
 
 app.get("/outlook/webhook", (req, res) => {
   const token = req.query.validationToken;
-  console.log("Received Token", token);
+  console.log("GET: Received Token", token);
   res.status(200).send(token);
 });
 
 app.post("/outlook/webhook", (req, res) => {
   const data = req.body;
-  console.log("Received data:", JSON.stringify(data, null, 2));
+  console.log("POST: Received Body:", JSON.stringify(data, null, 2));
   res.status(200).json({ message: "Data received successfully!" });
 });
 
