@@ -16,10 +16,7 @@ app.post("/api/submit", (req, res) => {
 
 app.get("/outlook/webhook", (req, res) => {
   const token = req.query.validationToken;
-  console.log(
-    "Received GET request to /outlook/webhook",
-    JSON.stringify(req, null, 2)
-  );
+  console.log("Received Token", token);
   res.status(200).send(token);
 });
 
