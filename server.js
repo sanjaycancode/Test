@@ -14,18 +14,19 @@ app.post("/api/submit", (req, res) => {
   res.status(200).json({ message: "Data received successfully!" });
 });
 
-app.post("/outlook/webhook", (req, res) => {
-  const data = req.body;
-  console.log("Received data:", JSON.stringify(data, null, 2));
-  res.status(200).json({ message: "Data received successfully!" });
-});
-
 app.get("/outlook/webhook", (req, res) => {
+  const token = req.query.validationToken;
   console.log(
     "Received GET request to /outlook/webhook",
     JSON.stringify(req, null, 2)
   );
-  res.status(200).send("Hello World!");
+  res.status(200).send(token);
+});
+
+app.post("/outlook/webhook", (req, res) => {
+  const data = req.body;
+  console.log("Received data:", JSON.stringify(data, null, 2));
+  res.status(200).json({ message: "Data received successfully!" });
 });
 
 app.listen(3000, () => {
