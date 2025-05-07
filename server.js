@@ -17,7 +17,7 @@ app.post("/outlook/webhook", (req, res) => {
 
   const data = req?.body?.value || null;
 
-  if (!data) res.status(200).json("No Data!");
+  if (!data) return res.status(200).json("No Data!");
 
   console.log("Received:", data);
 
