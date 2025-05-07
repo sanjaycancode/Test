@@ -17,7 +17,7 @@ app.post("/outlook/webhook", (req, res) => {
 
   const data = req.body.value;
 
-  console.log("POST: Received Body:", data);
+  console.log("Received:", data);
 
   res.status(200).json({ message: "Data received successfully!" });
 });
