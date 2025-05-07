@@ -14,15 +14,17 @@ app.post("/api/submit", (req, res) => {
   res.status(200).json({ message: "Data received successfully!" });
 });
 
-app.get("/outlook/webhook", (req, res) => {
-  const token = req.query.validationToken;
-  console.log("GET: Received Token", token);
-  res.status(200).send(token);
-});
-
 app.post("/outlook/webhook", (req, res) => {
+  if (req.query && req.query.validationToken) {
+    res.set("Content-Type", "text/plain");
+    res.send(req.query.validationToken);
+    return;
+  }
+
   const data = req.body;
+
   console.log("POST: Received Body:", JSON.stringify(data, null, 2));
+
   res.status(200).json({ message: "Data received successfully!" });
 });
 
