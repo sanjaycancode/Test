@@ -24,20 +24,36 @@ app.post("/outlook/webhook", (req, res) => {
   res.status(200).json("Data received successfully!");
 });
 
-app.post("/outlook/webhook/lifecycle", (req, res) => {
-  if (req?.query && req?.query?.validationToken) {
-    res.set("Content-Type", "text/plain");
-    res.send(req.query.validationToken);
-    return;
+app.post("/outlook/webhook/lifecycle", async (req, res) => {
+  try {
+    if (req?.query && req?.query?.validationToken) {
+      res.set("Content-Type", "text/plain");
+      res.send(req.query.validationToken);
+      return;
+    }
+
+    const data = req?.body?.value;
+
+    if (!data) return res.status(200).json("No Data!");
+
+    console.log("Lifecycle Notification", req.body);
+
+    if (!data?.length) return res.status(500).json("Invalid Lifecycle Data!");
+
+    const reauthorizationCycle = data?.find(
+      (c) => c?.lifecycleEvent === "reauthorizationRequired"
+    );
+
+    if (reauthorizationCycle) res.status(200).json("Success!");
+
+    const resubscribed = await fetch(
+      `https://graph.microsoft.com/v1.0/subscriptions/${reauthorizationCycle?.subscriptionId}`
+    ).then((res) => res.json());
+
+    console.log({ resubscribed });
+  } catch (error) {
+    console.log({ error });
   }
-
-  const data = req?.body?.value;
-
-  if (!data) return res.status(200).json("No Data!");
-
-  console.log("Lifecycle Notification", req.body);
-
-  res.status(200).json("Success!");
 });
 
 app.listen(3000, () => {
