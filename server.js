@@ -25,9 +25,17 @@ app.post("/outlook/webhook", (req, res) => {
 });
 
 app.post("/outlook/webhook/lifecycle", (req, res) => {
+  if (req?.query && req?.query?.validationToken) {
+    res.set("Content-Type", "text/plain");
+    res.send(req.query.validationToken);
+    return;
+  }
+
   const data = req?.body?.value;
 
-  console.log("Lifecycle Notification", data);
+  if (!data) return res.status(200).json("No Data!");
+
+  console.log("Lifecycle Notification", req.body);
 
   res.status(200).json("Success!");
 });
