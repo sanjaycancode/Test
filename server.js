@@ -24,6 +24,14 @@ app.post("/outlook/webhook", (req, res) => {
   res.status(200).json("Data received successfully!");
 });
 
+app.post("/outlook/webhook/lifecycle", (req, res) => {
+  const data = req?.body?.value;
+
+  console.log("Lifecycle Notification", data);
+
+  res.status(200).json("Success!");
+});
+
 app.listen(3000, () => {
   console.log("App listening on port 3000!");
 });
