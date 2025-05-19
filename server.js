@@ -36,21 +36,13 @@ app.post("/outlook/webhook/lifecycle", async (req, res) => {
 
     if (!data) return res.status(200).json("No Data!");
 
-    console.log("Lifecycle Notification", req.body);
-
     if (!data?.length) return res.status(500).json("Invalid Lifecycle Data!");
 
     const reauthorizationCycle = data?.find(
       (c) => c?.lifecycleEvent === "reauthorizationRequired"
     );
 
-    if (reauthorizationCycle) res.status(200).json("Success!");
-
-    const resubscribed = await fetch(
-      `https://graph.microsoft.com/v1.0/subscriptions/${reauthorizationCycle?.subscriptionId}`
-    ).then((res) => res.json());
-
-    console.log({ resubscribed });
+    console.log("Reauthorization Notification", reauthorizationCycle);
   } catch (error) {
     console.log({ error });
   }
