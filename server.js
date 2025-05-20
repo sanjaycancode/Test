@@ -9,19 +9,41 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/outlook/webhook", (req, res) => {
-  if (req?.query && req?.query?.validationToken) {
+  // if (req?.query && req?.query?.validationToken) {
+  //   res.set("Content-Type", "text/plain");
+  //   res.send(req.query.validationToken);
+  //   return;
+  // }
+
+  // const data = req?.body?.value || null;
+
+  // if (!data) return res.status(200).json("No Data!");
+
+  if (req.query && req.query.validationToken) {
+    // Important: Set content type to text/plain
     res.set("Content-Type", "text/plain");
-    res.send(req.query.validationToken);
+
+    // Send back the exact same validationToken with 200 OK status
+    res.status(200).send(req.query.validationToken);
+
+    console.log("Validation response sent successfully");
     return;
   }
 
   const data = req?.body?.value || null;
 
-  if (!data) return res.status(200).json("No Data!");
+  if (!data) return res.status(400).send("Invalid Notification Data!");
 
-  console.log("Received:", data);
+  if (
+    data?.changeType === "created" &&
+    data?.resourceData?.["@odata.type"] === "#Microsoft.Graph.Message"
+  ) {
+    res.status(202).send("Notification Received! Will take time in our end.");
 
-  res.status(200).json("Data received successfully!");
+    console.log("Received:", data);
+  }
+
+  res.status(200).send("Notification Received!");
 });
 
 app.post("/outlook/webhook/lifecycle", async (req, res) => {
