@@ -34,6 +34,8 @@ app.post("/outlook/webhook", (req, res) => {
 
   if (!data) return res.status(400).send("Invalid Notification Data!");
 
+  console.log(data);
+
   if (
     data?.changeType === "created" &&
     data?.resourceData?.["@odata.type"] === "#Microsoft.Graph.Message"
@@ -48,17 +50,24 @@ app.post("/outlook/webhook", (req, res) => {
 
 app.post("/outlook/webhook/lifecycle", async (req, res) => {
   try {
-    if (req?.query && req?.query?.validationToken) {
+    if (req.query && req.query.validationToken) {
+      // Important: Set content type to text/plain
       res.set("Content-Type", "text/plain");
-      res.send(req.query.validationToken);
+
+      // Send back the exact same validationToken with 200 OK status
+      res.status(200).send(req.query.validationToken);
+
+      console.log("Validation response sent successfully");
       return;
     }
 
     const data = req?.body?.value;
 
-    if (!data) return res.status(200).json("No Data!");
+    if (!data) return res.status(400).json("No Data!");
 
     if (!data?.length) return res.status(500).json("Invalid Lifecycle Data!");
+
+    console.log(reauthorizationCycle);
 
     const reauthorizationCycle = data?.find(
       (c) => c?.lifecycleEvent === "reauthorizationRequired"
