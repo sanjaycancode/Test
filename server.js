@@ -34,7 +34,7 @@ app.post("/outlook/webhook", (req, res) => {
 
   if (!data) return res.status(400).send("Invalid Notification Data!");
 
-  console.log(data);
+  console.log("Received Data", data);
 
   if (
     data?.changeType === "created" &&
@@ -42,7 +42,7 @@ app.post("/outlook/webhook", (req, res) => {
   ) {
     res.status(202).send("Notification Received! Will take time in our end.");
 
-    console.log("Received:", data);
+    console.log("Received Message Data:", data);
   }
 
   res.status(200).send("Notification Received!");
