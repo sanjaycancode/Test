@@ -9,16 +9,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/outlook/webhook", (req, res) => {
-  // if (req?.query && req?.query?.validationToken) {
-  //   res.set("Content-Type", "text/plain");
-  //   res.send(req.query.validationToken);
-  //   return;
-  // }
-
-  // const data = req?.body?.value || null;
-
-  // if (!data) return res.status(200).json("No Data!");
-
   if (req.query && req.query.validationToken) {
     // Important: Set content type to text/plain
     res.set("Content-Type", "text/plain");
@@ -30,20 +20,18 @@ app.post("/outlook/webhook", (req, res) => {
     return;
   }
 
-  const data = req?.body?.value || null;
+  const notificationData = req?.body?.value || null;
 
-  if (!data) return res.status(400).send("Invalid Notification Data!");
+  console.log({ notificationData });
 
-  console.log("Received Data", data);
+  if (!notificationData?.length)
+    return res.status(400).send("Invalid Notification Data!");
 
-  if (
-    data?.changeType === "created" &&
-    data?.resourceData?.["@odata.type"] === "#Microsoft.Graph.Message"
-  ) {
-    res.status(202).send("Notification Received! Will take time in our end.");
+  const messageResourceData = notificationData?.find(
+    (n) => n?.resourceData?.["@odata.type"] === "#Microsoft.Graph.Message"
+  );
 
-    console.log("Received Message Data:", data);
-  }
+  console.log({ messageResourceData });
 
   res.status(200).send("Notification Received!");
 });
