@@ -55,8 +55,6 @@ app.post("/outlook/webhook/lifecycle", async (req, res) => {
 
     if (!data?.length) return res.status(500).json("Invalid Lifecycle Data!");
 
-    console.log(reauthorizationCycle);
-
     const reauthorizationCycle = data?.find(
       (c) => c?.lifecycleEvent === "reauthorizationRequired"
     );
