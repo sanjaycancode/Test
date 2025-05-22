@@ -8,7 +8,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post("/outlook/webhook", (req, res) => {
+app.post("/outlook-webhook", (req, res) => {
   if (req.query && req.query.validationToken) {
     // Important: Set content type to text/plain
     res.set("Content-Type", "text/plain");
@@ -36,7 +36,7 @@ app.post("/outlook/webhook", (req, res) => {
   res.status(200).send("Notification Received!");
 });
 
-app.post("/outlook/webhook/lifecycle", async (req, res) => {
+app.post("/outlook-webhook/lifecycle", async (req, res) => {
   try {
     if (req.query && req.query.validationToken) {
       // Important: Set content type to text/plain
