@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post("/webhook", (req, res) => {
   if (req.query && req.query.validationToken) {
     // Important: Set content type to text/plain
-    // res.set("Content-Type", "text/plain");
+    res.set("Content-Type", "text/plain");
 
     // Send back the exact same validationToken with 200 OK status
     res.status(200).send(req.query.validationToken);
