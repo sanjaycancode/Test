@@ -9,16 +9,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/webhook", (req, res) => {
-  // if (req.query && req.query.validationToken) {
-  //   // Important: Set content type to text/plain
-  //   res.set("Content-Type", "text/plain");
+  if (req.query && req.query.validationToken) {
+    // Important: Set content type to text/plain
+    // res.set("Content-Type", "text/plain");
 
-  //   // Send back the exact same validationToken with 200 OK status
-  //   res.status(200).send(req.query.validationToken);
-
-  //   console.log("Validation response sent successfully");
-  //   return;
-  // }
+    // Send back the exact same validationToken with 200 OK status
+    res.status(200).send(req.query.validationToken);
+    console.log("Validation response sent successfully");
+    return;
+  }
 
   // const notificationData = req?.body?.value || null;
 
